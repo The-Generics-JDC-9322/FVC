@@ -24,6 +24,7 @@
     "appClusterID": "gatech.edu.vera"
   },
   "devDependencies": {
-    "@fitbit/sdk": "~4.1.0"
+    "@fitbit/sdk": "~4.1.0",
+    "@fitbit/sdk-cli": "^1.7.1"
   }
 }

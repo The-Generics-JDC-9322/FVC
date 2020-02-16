@@ -25,5 +25,7 @@ fitbit$
 See this Fitbit Guide [Command Line Interface Guide](https://dev.fitbit.com/build/guides/command-line-interface/)
 for more information about building and running a fitbit application from the command line.
 
-
+## Future Change Ideas
+There are a lot of good ideas about how to enhance fitbit apps using open source modules.
+We might be revisiting this if we have time. Checkout [OSSAPPS](https://github.com/Fitbit/ossapps).
     

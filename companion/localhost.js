@@ -1,6 +1,6 @@
 import {peerSocket} from "messaging";
 
-const wsUri = "wss://localhost:4500/";
+const wsUri = "ws://127.0.0.1:4500/";
 export const websocket = new WebSocket(wsUri);
 
 export function addWebsocketHandlers() {
@@ -31,9 +31,9 @@ function onClose(evt) {
 function onAppMessage(evt) {
   console.log(`MESSAGE: ${evt.data}`);
   var message = evt.data
-  if (message[0] == "hb") {
+  if (message.equals("[hb]")) {
     peerSocket.send(['hb']);
-  } else if (message[0] == "c") {
+  } else if (message.equals("[c]")) {
     peerSocket.send(['c']);
   }
 }

@@ -1,5 +1,6 @@
-import { importMessaging, importDocument, importSystem } from "./imports";
-import writeHeartData, { getLastDataPoint, timeSinceWrite } from "./author";
+import { importMessaging, importDocument, importSystem } from "./imports.js";
+import writeHeartData, { getLastDataPoint, timeSinceWrite } from "./author.js";
+import { isConMessage, isHBMessage } from "../common/com-protocol.js"
 
 var document = importDocument();
 var messaging = importMessaging();
@@ -36,10 +37,10 @@ function onMessage(evt) {
   //if the message says read the file then send the file data
   var message = evt.data
   console.log("app|",`MESSAGE: ${message}`);
-  if (message == "[hb]") {
+  if (isHBMessage(message)) {
     let last = getLastDataPoint();
     messaging.peerSocket.send(`[hb,${last}]`);
-  } else if (message == "[c]") {
+  } else if (isConMessage(message)) {
     statusText.text = "Connected to VERA";
     messaging.peerSocket.send("[c]");
   }

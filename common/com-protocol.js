@@ -1,19 +1,10 @@
-import * as messaging from "messaging";
 
-export const packets = {
-  HBP : 0,
-  CP : 1,
+export function isConMessage(msg) {
+  let re = RegExp('[\[]c.*');
+  return re.test(msg);
 }
 
-class HeartBeatPacket {
-  constructor(data) {
-    this.value = data
-  }
-  type = 0;
+export function isHBMessage(msg) {
+  let re = RegExp('[\[]hb.*');
+  return re.test(msg);
 }
-                      
-class ConnectPacket {
-  type = 1;
-} 
-                      
-               

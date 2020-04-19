@@ -1,5 +1,6 @@
 import { addWebSocketHandlers, sendHealthDataMessage, sendConnectedMessage } from "./localhost.js";
 import { importMessaging } from "./imports.js"
+import { isConMessage, isHBMessage } from "../common/com-protocol.js"
 
 var messaging = importMessaging();
 
@@ -13,11 +14,6 @@ export function initPeerSocketHandlers() {
 
 }
 
-export function isHBMessage(msg) {
-  let re = RegExp('[\[]hb.*');
-  return re.test(msg);
-}
-
 function onOpen(evt) {
   console.log("companion|","PeerSocket Opened");
 }
@@ -27,7 +23,7 @@ function onPeerMessage(event) {
   console.log("companion|",`MESSAGE: ${message}`);
   if (isHBMessage(message)) {
     sendHealthDataMessage(message);
-  } else if (message == "[c]") {
+  } else if (isConMessage(message)) {
     sendConnectedMessage();
   }
 }

@@ -65,7 +65,6 @@ export function getLastDataPoint() {
 
   }
   
-  
   return last;
 }
 

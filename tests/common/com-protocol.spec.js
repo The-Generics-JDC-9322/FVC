@@ -1,5 +1,5 @@
 const test = require('ava');
-import { isHBMessage } from "../../companion/peerSocketHandler.js";
+import { isHBMessage } from "../../common/com-protocol.js";
 
 test("regex for [hb,x]", t => {
   t.is(isHBMessage("[hb,12]"), true);

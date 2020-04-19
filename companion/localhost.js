@@ -1,4 +1,6 @@
 import { importMessaging } from "./imports.js";
+import { isConMessage, isHBMessage } from "../common/com-protocol.js"
+
 
 var messaging = importMessaging();
 
@@ -34,7 +36,7 @@ function onClose(evt) {
 function onAppMessage(evt) {
   console.log("companion|","ws|",`MESSAGE: ${evt.data}`);
   var message = String(evt.data);
-  if (message == "[hb]" || message == "[c]") {
+  if (isHBMessage(message) || isConMessage(message)) {
     messaging.peerSocket.send(message);
   }
 }

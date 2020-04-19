@@ -1,19 +1,19 @@
-import { HeartRateSensor } from "heart-rate";
-import { peerSocket } from "messaging";
+import { importFileSystem, importHeartRate } from "./imports";
 import fs from "fs";
-import cbor from "cbor";
+
+var hr = importHeartRate();
 
 export const hrLogName = "hrLog.dat";
 const cleanIntervalMS = 200000;
 var lastWriteTime = Date.now();
-const hrm = new HeartRateSensor();    
+const hrm = new hr.HeartRateSensor();    
 
 export default function writeHeartData() {
-  if (HeartRateSensor) {
-    console.log("This device has a HeartRateSensor!");
+  if (hr.HeartRateSensor) {
+    console.log("app|","This device has a HeartRateSensor!");
     
     hrm.addEventListener("reading", () => {
-      console.log(`Current heart rate: ${hrm.heartRate}`);
+      console.log("app|",`Current heart rate: ${hrm.heartRate}`);
             
       let buf = new Uint16Array(1);
       buf[0] = hrm.heartRate
@@ -25,16 +25,16 @@ export default function writeHeartData() {
     });
     hrm.start();
   } else {
-    console.log("This device does NOT have a HeartRateSensor!");
+    console.log("app|","This device does NOT have a HeartRateSensor!");
   }
 }
 
 function cleanLogFile() {
-  console.log("Cleaning Data Log")
+  console.log("app|","Cleaning Data Log")
   let stats = fs.statSync(hrLogName);
   if (stats) {
-    console.log("File size: " + stats.size + " bytes");
-    console.log("Last modified: " + stats.mtime);
+    console.log("app|","File size: " + stats.size + " bytes");
+    console.log("app|","Last modified: " + stats.mtime);
   }
   
   let buf = new Uint16Array(1);

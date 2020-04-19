@@ -1,50 +1,49 @@
-import {peerSocket} from "messaging";
+import { importMessaging } from "./message-utils";
 
-const wsUri = "ws://127.0.0.1:4500/";
-export const websocket = new WebSocket(wsUri);
+var messaging = importMessaging();
 
-export function addWebsocketHandlers() {
+export const wsUri = "ws://127.0.0.1:4500/";
+var websocket;
+
+export function addWebSocketHandlers(ws) {
+  websocket = ws;
   websocket.addEventListener("open", onOpen);
   websocket.addEventListener("close", onClose);
   websocket.addEventListener("message", onAppMessage);
   websocket.addEventListener("error", onError);
-  console.log("Websocket is currently: " + websocket.readyState)
+  console.log("companion|","Websocket is currently: " + websocket.readyState);
 }
 
 function send(msg) {
   if (websocket.readyState === WebSocket.OPEN) {
     websocket.send(msg);
   } else {
-    console.log("Websocket not open. Cannot send message.");
+    console.log("companion|","Websocket not open. Cannot send message.");
   }
 }
 
 function onOpen(evt) {
-   console.log("CONNECTED");
-   websocket.send(message);
+   console.log("companion|","ws|","CONNECTED");
+   websocket.send("[c]");
 }
 
 function onClose(evt) {
-   console.log("DISCONNECTED");
+   console.log("companion|","ws|","DISCONNECTED");
 }
 
 function onAppMessage(evt) {
-  console.log(`MESSAGE: ${evt.data}`);
-  var message = evt.data
-  if (message.equals("[hb]")) {
-    peerSocket.send(['hb']);
-  } else if (message.equals("[c]")) {
-    peerSocket.send(['c']);
+  console.log("companion|","ws|",`MESSAGE: ${evt.data}`);
+  var message = String(evt.data);
+  if (message == "[hb]" || message == "[c]") {
+    messaging.peerSocket.send(message);
   }
 }
 
 function onError(evt) {
-  evt.preventDefault();
-  console.error(`ERROR: ${evt.type}`);
-}
-
-export function sendHealthDataFile(file) {
-  send(file);
+  console.error("companion|","ws|",
+    `Websocket is currently: ${websocket.readyState}`);
+  // evt.preventDefault();
+  console.error("companion|","ws|",`ERROR: ${evt.type}`);
 }
 
 export function sendHealthDataMessage(msg) {

@@ -1,10 +1,12 @@
-import document from "document";
-import { inbox, outbox } from "file-transfer";
+import { importMessaging, importDocument, importSystem } from "./imports";
 import writeHeartData, { getLastDataPoint, timeSinceWrite } from "./author";
-import { peerSocket } from "messaging";
-import { memory } from "system";
 
-console.log("JS memory: " + memory.js.used + "/" + memory.js.total);
+var document = importDocument();
+var messaging = importMessaging();
+var system = importSystem();
+// import { inbox, outbox } from "file-transfer";
+
+console.log("app|","JS memory: ", system.memory.js.used, "/", system.memory.js.total);
 
 let hrLabel = document.getElementById("hrm");
 let updatedLabel = document.getElementById("updated");
@@ -22,35 +24,35 @@ function updateDisplay() {
 }
 
 function onOpen(evt) {
-  console.log("PeerSocket Opened");
+  console.log("app|","PeerSocket Opened");
 }
 
 function onError(evt) {
-  console.log(`PeerSocket Error ${evt.data}`);
+  console.log("app|",`PeerSocket Error ${evt.data}`);
 }
 
 function onMessage(evt) {
-  console.log(`PeerSocket Recv ${evt.data}`);
+  console.log("app|",`PeerSocket Recv ${evt.data}`);
   //if the message says read the file then send the file data
   var message = evt.data
-  console.log(`MESSAGE: ${message}`);
-  if (message[0] == "hb") {
+  console.log("app|",`MESSAGE: ${message}`);
+  if (message == "[hb]") {
     let last = getLastDataPoint();
-    peerSocket.send(["hb", last]);
+    messaging.peerSocket.send(["hb", last]);
   } else if (message[0] == "c") {
     statusText.text = "Connected to VERA";
-    peerSocket.send(["c"]);
+    messaging.peerSocket.send(["c"]);
   }
 }
 
 function onClose(evt) {
-  console.log("PeerSocketClosed");
+  console.log("app|","PeerSocketClosed");
 }
 
-peerSocket.addEventListener("open", onOpen);
-peerSocket.addEventListener("error", onError);
-peerSocket.addEventListener("message", onMessage);
-peerSocket.addEventListener("close", onClose);
+messaging.peerSocket.addEventListener("open", onOpen);
+messaging.peerSocket.addEventListener("error", onError);
+messaging.peerSocket.addEventListener("message", onMessage);
+messaging.peerSocket.addEventListener("close", onClose);
 
 writeHeartData();
 

@@ -25,6 +25,23 @@
   },
   "devDependencies": {
     "@fitbit/sdk": "~4.1.0",
-    "@fitbit/sdk-cli": "^1.7.1"
+    "@fitbit/sdk-cli": "^1.7.1",
+    "ava": "^1.4.1",
+    "browser-env": "^3.3.0",
+    "mock-socket": "^9.0.3"
+  },
+  "scripts": {
+    "build": "fitbit-build",
+    "debug": "fitbit",
+    "test": "TEST=TEST ava"
+  },
+  "ava": {
+    "files": [
+      "tests/**/*.spec.js"
+    ],
+    "require": [
+      "esm",
+      "./tests/_setup-browser-env.js"
+    ]
   }
 }

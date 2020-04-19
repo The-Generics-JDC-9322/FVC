@@ -1,4 +1,4 @@
-import { initPeerSocketHandlers } from "./message-utils";
+import { initPeerSocketHandlers } from "./peerSocketHandler.js";
 import { wsUri, addWebSocketHandlers } from "./localhost.js";
 
 initPeerSocketHandlers();

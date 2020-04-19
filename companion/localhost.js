@@ -1,4 +1,4 @@
-import { importMessaging } from "./message-utils";
+import { importMessaging } from "./imports.js";
 
 var messaging = importMessaging();
 
@@ -52,5 +52,5 @@ export function sendHealthDataMessage(msg) {
 }
 
 export function sendConnectedMessage() {
-  send(["c"]);
+  send("[c]");
 }

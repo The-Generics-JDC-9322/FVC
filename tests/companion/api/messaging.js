@@ -12,7 +12,6 @@ class PeerSocket {
   }
 
   addEventListener(type, handler) {
-
     switch (type) {
       case 'open': 
         this.onOpen.push(handler);
@@ -30,11 +29,12 @@ class PeerSocket {
         break;
     }
   }
+
   send(msg) {
     var sendEvent = new Event(msg);
     sendEvent.data = msg;
 
-    console.log("companion|","messaging|",sendEvent.data);
+    // console.log("companion|","messaging|",messaging);
 
     //to the other one
     appMessaging.peerSocket.onMessage.forEach( func => {

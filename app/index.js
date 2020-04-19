@@ -38,10 +38,10 @@ function onMessage(evt) {
   console.log("app|",`MESSAGE: ${message}`);
   if (message == "[hb]") {
     let last = getLastDataPoint();
-    messaging.peerSocket.send(["hb", last]);
-  } else if (message[0] == "c") {
+    messaging.peerSocket.send(`[hb,${last}]`);
+  } else if (message == "[c]") {
     statusText.text = "Connected to VERA";
-    messaging.peerSocket.send(["c"]);
+    messaging.peerSocket.send("[c]");
   }
 }
 

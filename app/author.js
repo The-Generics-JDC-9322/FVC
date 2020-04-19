@@ -1,4 +1,4 @@
-import { importFileSystem, importHeartRate } from "./imports";
+import { importHeartRate } from "./imports";
 import fs from "fs";
 
 var hr = importHeartRate();
@@ -44,13 +44,27 @@ function cleanLogFile() {
 }
 
 export function getLastDataPoint() {
-  let stats = fs.statSync(hrLogName);
-  let fd = fs.openSync(hrLogName, "r");
-  var buf = new ArrayBuffer(stats.size);
-  fs.readSync(fd, buf);
-  var uint16Arr = new Uint16Array(buf);  
-  var last = uint16Arr[uint16Arr.length - 1];
-  fs.closeSync(fd);
+  var last;
+
+  try {
+    let stats = fs.statSync(hrLogName);
+    let fd = fs.openSync(hrLogName, "r");
+    var buf = new ArrayBuffer(stats.size);
+    fs.readSync(fd, buf);
+    var uint16Arr = new Uint16Array(buf);  
+    last = uint16Arr[uint16Arr.length - 1];
+    fs.closeSync(fd);
+  } catch (err) {
+
+    if (err.code === 'ENOENT') {
+      console.log("app|",'hrLogName not found!');
+      last = -1;
+    } else {
+      throw err;
+    }
+
+  }
+  
   
   return last;
 }

@@ -1,5 +1,3 @@
-const companionMessaging = require("../../companion/api/messaging");
-
 
 class PeerSocket {
   
@@ -31,6 +29,14 @@ class PeerSocket {
   }
   send(msg) {
     var sendEvent = new Event(msg);
+    sendEvent.data = msg;
+
+    //import circular dependency in send function
+    const companionMessaging = require("../../companion/api/messaging");
+
+    // console.log("app|", "messaging|", sendEvent.data);
+    // console.log("app|", "messaging|", companionMessaging);
+
 
     //to the other one
     companionMessaging.peerSocket.onMessage.forEach( func => {

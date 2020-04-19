@@ -1,6 +1,7 @@
 const test = require('ava');
 import { WebSocket, Server } from 'mock-socket';
 import { addWebSocketHandlers } from '../../companion/localhost.js';
+import { initPeerSocketHandlers } from "../../companion/peerSocketHandler.js";
 
 const fakeURL = 'ws://127.0.0.1:4500/';
 
@@ -52,17 +53,21 @@ test.cb("connect to companion with NOPs and [c]", t => {
     socket.send('[hb]');
   });
 
+  initPeerSocketHandlers();
   addWebSocketHandlers(new WebSocket(fakeURL));
   // t.is(mockServer.clients().length, 1);
 
   // NOTE: this timeout is for creating another micro task that will happen after the above one
   setTimeout(() => {
-    t.is(recvQueue[0], '[c]');
+    t.is(recvQueue[0], '[c]', "first message from companion is connected");
+    t.is(recvQueue.indexOf('[hb,-1]') >= 0, true, "recvQueue got a heartbeat value");
     
     t.end();
-  }, 100);
+  }, 2000);
 
   console.log("Last thing in test");
 });
+
+
 
 
